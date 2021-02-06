@@ -9,7 +9,7 @@ h1 {
 
 .body-container {
     display: flex;
-    height: 100%;
+    height: max(100%, 0%);
 }
 
 .content-container {
@@ -51,15 +51,107 @@ h1 {
     background-color: #360071 !important;
 }
 
-.home-header {
+.page-header {
     margin-bottom: 0;
     display: flex;
     justify-content: center;
     background-color: #360071;
 }
 
-.home-header-text {
+.page-header-text {
     width: 60%;
     text-align: center;
     background-color: white;
+    padding-bottom: 10px;
+}
+
+.side-border {
+    width: 20%;
+    background-color: #360071 !important;
+}
+
+.left-content {
+    display: flex;
+    justify-content: space-evenly;
+    width: 60%;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.about-right-content {
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.about-lower-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.lower-content {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.about-lower-outer {
+    font-family: 'Ubuntu', sans-serif;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.disc-info {
+    display: flex;
+    flex-direction: column;
+    max-width: 25%;
+}
+
+.about-pictures {
+    max-width: 302.4px;
+    max-height: 403.2px;
+}
+
+footer {
+    background-color: #360071;
+    text-align: center;
+    font-size: 20px;
+    margin: 0px auto 0 auto;
+}
+
+.footer-wrapper {
+    width: 100%;
+    bottom: 0;
+}
+
+.footer-text {
+    color: aquamarine;
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.course-pic {
+    max-width: 216px;
+    max-height: 288px;
+}
+
+.pic {
+    max-width: 300px;
+}
+
+p {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+li {
+    font-family: 'Ubuntu', sans-serif;
 }
