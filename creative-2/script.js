@@ -41,7 +41,7 @@ document.getElementById("countrySubmit").addEventListener("click", function(even
         let results = "";
         fetch(url1)
         .then(function(response) {
-            if (response.status == 404) {
+            if (response.status != 200) {
                 const url = "https://api.covid19api.com/countries"
                 fetch(url)
                 .then(function(response) {
@@ -53,6 +53,9 @@ document.getElementById("countrySubmit").addEventListener("click", function(even
                     results += "<ul>";
                     console.log("first", json.length)
                     for (let i = 0; i < json.length; i++) {
+                        if (json[i].Country == "United States of America") {
+                            continue;
+                        }
                         results += "<li>" + json[i].Country + "</li>";
                     }
                     results += "</ul>";
