@@ -1,0 +1,26 @@
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    background-color: #ff758e;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2em;
+}
+
+input {
+    font-size: .75em;
+}
+
+footer {
+    margin: auto 0 5px 0;
+}
+
+.body-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
