@@ -5,7 +5,7 @@
         <router-link to="/list">Restaurants</router-link>
       </div>
       <router-view/>
-    <footer><a href="">Here's my Github</a></footer>
+    <footer><a href="https://github.com/werndog/260/tree/master/creative-3">Here's my Github</a></footer>
   </div>
 
 </template>
