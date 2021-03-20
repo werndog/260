@@ -5,7 +5,7 @@
     <h3>To start, click on restaurants above and add your favorite restaurants</h3>
     <img class="logo" alt="Restaurant" src="../assets/restaurant.jpeg">
     <div v-if="!started">
-      <button class="startButton" @click="start">Start</button>
+      <button id="start" class="startButton" @click="start">Start</button>
     </div>
     <div class="contenders" v-if="started && winner === ''">
       <div class="contender" v-for="restaurant in curRestaurants" :key="restaurant">
@@ -33,6 +33,11 @@ export default {
       curRestaurants: [],
     }
   },
+  mounted: function () {
+    if (this.restaurants.length === 0) {
+      document.getElementById("start").disabled = true;
+    }
+  },
   methods: {
     start() {
       if (this.restaurants.length > 0) {
@@ -44,7 +49,7 @@ export default {
       let numRestaurants = this.restaurants.length;
       //if only 2 or 3 remain, pit them against each other
       if (numRestaurants <= 3) {
-        let toReturn = this.restaurants;
+        let toReturn = [...this.restaurants];
         this.restaurants = []
         return toReturn;
       }
@@ -65,15 +70,15 @@ export default {
       return [first, second];
     },
     selectWinner(rest) {
-      console.log(rest)
       this.winners.push(rest);
       if (this.restaurants.length === 0 && this.winners.length > 1) {
         this.restaurants = this.winners;
         this.winners = [];
       }
-      // debugger
+      
       if (this.restaurants.length > 0) {
         this.curRestaurants = this.grabRestaurants();
+        return;
       }
 
       if (this.restaurants.length === 0 && this.winners.length === 1) {
@@ -111,6 +116,10 @@ export default {
   .startButton {
     font-size: 2em;
     margin-top: 1%;
+  }
+
+  button:disabled {
+    color: gray;
   }
 
   .winner {

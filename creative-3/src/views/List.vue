@@ -43,8 +43,6 @@ export default {
     },
     removeAll() {
       this.$root.$data.restaurants = [];
-      console.log(this.$root.$data.restaurants.length);
-      console.log(this.restaurants.length)
     }
   }
 }
