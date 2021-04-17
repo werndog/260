@@ -1,60 +1,62 @@
 <template>
   <div>
-    <h1>Please enter your request:</h1>
-    <div class="add">
-      <div class="form">
-        <input v-model="requester" placeholder="Requester">
-        <p/>
-        <textarea v-model="description" placeholder="Description..."/>
-        <p/>
-        <span>Expires:</span>
-        <input type="date" v-model="expires" placeholder="Expires"/>
-        <p/>
-        <button @click="submitRequest">Submit</button>
+    <div v-if="user">
+      <div class="logout">
+        <button @click="logout()">Log out</button>
       </div>
-      <div class="request" v-if="curRequest">
-        <h3>Requester: {{curRequest.requester}}</h3>
-        <p>{{curRequest.description}}</p>
-        <p v-if="curRequest.expires">Expires: {{curRequest.expires}}</p>
-      </div>
-      <div class="request" v-if="error">
-        <h3>{{error}}</h3>
-      </div>
-    </div>
-    <div class="delete">
-      <div>
-        <h1>Find a previous request:</h1>
-        <input v-model="id" placeholder="ID">
-        <p/>
-        <button @click="find(id)">Submit</button>
-      </div>
-      <div class="request" v-if="findRequest">
-        <input v-model="findRequest.requester">
-        <p/>
-        <textarea v-model="findRequest.description"/>
-        <p/>
-        <input type="date" v-model="editExpires">
-        <p/>
-        <div>
-          <button @click="deleteRequest(findRequest)">Delete</button>
-          <button class="edit" @click="editRequest(findRequest)">Edit</button>
+      <h1>Please enter your request:</h1>
+      <div class="add">
+        <div class="form">
+          <textarea v-model="description" placeholder="Description..."/>
+          <p/>
+          <span>Expires:</span>
+          <input type="date" v-model="expires" placeholder="Expires"/>
+          <p/>
+          <button @click="submitRequest">Submit</button>
+        </div>
+        <div class="request" v-if="curRequest">
+          <p>{{curRequest.description}}</p>
+          <p v-if="curRequest.expires">Expires: {{curRequest.expires}}</p>
+        </div>
+        <div class="request" v-if="error">
+          <h3>{{error}}</h3>
         </div>
       </div>
-      <div class="request" v-if="editError">
-        <h3>{{editError}}</h3>
+      <div class="delete">
+        <div>
+          <h1>Find a previous request:</h1>
+          <input v-model="id" placeholder="ID">
+          <p/>
+          <button @click="find(id)">Submit</button>
+        </div>
+        <div class="request" v-if="findRequest">
+          <textarea v-model="findRequest.description"/>
+          <p/>
+          <input type="date" v-model="editExpires">
+          <p/>
+          <div>
+            <button @click="deleteRequest(findRequest)">Delete</button>
+            <button class="edit" @click="editRequest(findRequest)">Edit</button>
+          </div>
+        </div>
+        <div class="request" v-if="editError">
+          <h3>{{editError}}</h3>
+        </div>
       </div>
     </div>
+    <Login v-else />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Login from '@/components/Login.vue';
 export default {
+  components: { Login },
   name: 'Admin',
   data() {
     return {
       curRequest: null,
-      requester: "",
       description: "",
       id: "",
       requests: [],
@@ -65,8 +67,20 @@ export default {
       editError: "",
     }
   },
-  created() {
+  async created() {
     this.getRequests();
+    try {
+      let response = await axios.get('/api/users');
+      this.$root.$data.user = response.data.user;
+    } catch (error) {
+      this.$root.$data.user = null;
+    }
+  },
+  computed: {
+    user() {
+      console.log(this.$root.$data.user);
+      return this.$root.$data.user;
+    }
   },
   methods: {
     async getRequests() {
@@ -97,18 +111,12 @@ export default {
         return;
       }
 
-      if (this.requester === '') {
-        this.error = 'Invalid requester given';
-        return
-      }
-
       if (this.description === '') {
         this.error = 'Invalid description given';
         return
       }
       try {
         let resp = await axios.post('/api/requests', {
-          requester: this.requester,
           description: this.description,
           expires: this.expires,
         });
@@ -141,7 +149,6 @@ export default {
       }
       try {
         await axios.put('/api/requests/' + request.id, {
-          requester: request.requester,
           description: request.description,
           expires: this.expires,
         });
@@ -151,7 +158,15 @@ export default {
       } catch(error) {
         return false;
       }
-    }
+    },
+    async logout() {
+      try {
+        await axios.delete("/api/users");
+        this.$root.$data.user = null;
+      } catch (error) {
+        this.$root.$data.user = null;
+      }
+    },
   }
 }
 </script>
@@ -166,11 +181,16 @@ export default {
   display: flex;
 }
 
-.request,
+.request {
+  margin-left: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .edit {
   margin-left: 10%;
 }
-
 
 .form {
   display: flex;
